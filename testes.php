@@ -18,7 +18,7 @@ echo $calculadora->calcular($orcamento, new Iss());*/
 $calculadora = new CalculadoraDeDescontos();
 
 $orcamento = new Orcamento();
-$orcamento->valor = 200;
+$orcamento->valor = 600;
 $orcamento->quantidadeDeItens = 5;
 
 echo $calculadora->calcular($orcamento);
