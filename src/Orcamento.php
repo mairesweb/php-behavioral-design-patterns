@@ -2,28 +2,33 @@
 
 namespace Alura\DesignPattern;
 
+use Alura\DesignPattern\EstadosOrcamento\EmAprovacao;
+use Alura\DesignPattern\EstadosOrcamento\EstadoOrcamento;
 use DomainException;
 
 class Orcamento {
   public int $quantidadeDeItens;
   public float $valor;
-  public string $estadoAtual;
+  public EstadoOrcamento $estadoAtual;
 
-  public function aplicaDescontoExtra() {
-    $this->valor -= $this->calculaDescontoExtra();
+  public function __construct()
+  {
+    $this->estadoAtual = new EmAprovacao();
   }
 
-  public function calculaDescontoExtra(): float {
-    if ($this->estadoAtual == 'EM_APROVACAO') {
-      return $this->valor * 0.05;
-    }
+  public function aplicaDescontoExtra() {
+    $this->valor -= $this->estadoAtual->calculaDescontoExtra($this);
+  }
 
-    if ($this->estadoAtual == 'AROVADO') {
-      return $this->valor * 0.02;
-    }
+  public function aprova() {
+    $this->estadoAtual->aprova($this);
+  }
 
-    throw new DomainException(
-      'Orçamentos reprovados e finalizados não recebem desconto'
-    );
+  public function reprova() {
+    $this->estadoAtual->reprova($this);
+  }
+
+  public function finaliza() {
+    $this->estadoAtual->finaliza($this);
   }
 }
